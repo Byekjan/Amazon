@@ -6,7 +6,7 @@ const {
     updateBook,
     deleteBook
 } = require('../controller/books');
-const router = express.Router();
+const router = express.Router({mergeParams: true});
 
 router.route('/').get(getBooks).post(createtBook);
 router.route('/:id').get(getBook).put(updateBook).delete(deleteBook);

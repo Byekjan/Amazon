@@ -3,17 +3,44 @@ const MyError = require("../utils/myError");
 const asyncHandler = require("../middleware/asyncHandler");
 
 exports.getCategories = asyncHandler( async (req, res, next) => {
-    const categories = await Category.find();
-    console.log(categories);
+    // {{url}}/api/v1/categories?select=name slug averagePrice&sort=averagePrice
+    // {{url}}/api/v1/categories?averagePrice[$lte]=11000
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 100;
+    const sort = req.query.sort;
+    const query = req.query.select;
+    
+    ['select', 'sort', 'limit', 'page'].forEach( el => delete req.query[el]);
+
+    const total = await Category.countDocuments();
+    const pageCount = Math.ceil(total / limit);
+    const start = (page - 1) * limit + 1;
+    let end = start + limit - 1;
+    if (end > total) end = total;
+
+    const pagination = {total, pageCount, start, end, limit}
+
+    if (page < pageCount) pagination.nextPage = page + 1;
+    if (page > 1) pagination.prevPage = page - 1;
+
+
+    const categories = await Category.find(req.query, query)
+        .sort(sort)
+        .skip(start - 1)
+        .limit(limit);
+
+
+    //{{url}}/api/v1/categories?name=biznes&price=100000  example query parameter
     res.status(200).json({
         success: true,
         data: categories,
+        pagination: pagination
         // userID: req.userID
     });
 });
 
 exports.getCategory = asyncHandler( async (req, res, next) => {
-    const category = await Category.findById(req.params.id);
+    const category = await Category.findById(req.params.id).populate('books');
     if (!category) {
         throw new MyError(req.params.id + " data not found", 400);
     }

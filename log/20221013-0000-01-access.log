@@ -1,5 +1,0 @@
-::1 - - [12/Oct/2022:15:31:18 +0000] "GET /api/v1/books HTTP/1.1" 200 39 "-" "PostmanRuntime/7.29.0"
-::1 - - [12/Oct/2022:15:32:28 +0000] "GET /api/v1/books HTTP/1.1" 200 39 "-" "PostmanRuntime/7.29.0"
-::1 - - [12/Oct/2022:15:32:36 +0000] "GET /api/v1/books HTTP/1.1" 200 39 "-" "PostmanRuntime/7.29.0"
-::1 - - [12/Oct/2022:15:33:12 +0000] "POST /api/v1/books HTTP/1.1" 200 63 "-" "PostmanRuntime/7.29.0"
-::1 - - [12/Oct/2022:15:33:24 +0000] "GET /api/v1/books/1 HTTP/1.1" 200 34 "-" "PostmanRuntime/7.29.0"

@@ -1,11 +1,24 @@
 const Book = require("../models/Book");
+const MyError = require("../utils/myError");
+const asyncHandler = require("../middleware/asyncHandler");
 
-exports.getBooks = (req, res, next) => {
+exports.getBooks = asyncHandler(async (req, res, next) => {
+    let query;
+    if(req.params.categoryId) {
+        query = Book.find({category: req.params.categoryId});
+    } else {
+        query = Book.find().populate({
+            path: 'category',
+            select: 'name averagePrice'
+        });
+    }
+    const books = await query;
     res.status(200).json({
         success: true,
-        data: 'get all books'
+        count: books.length,
+        data: books
     });
-}
+});
 
 exports.getBook = (req, res, next) => {
     res.status(200).json({
