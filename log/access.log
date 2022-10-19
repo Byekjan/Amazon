@@ -6,3 +6,7 @@
 ::1 - - [19/Oct/2022:16:41:12 +0000] "GET /api/v1/categories/5e90478549941f52dcb01b34 HTTP/1.1" 500 143 "-" "PostmanRuntime/7.29.2"
 ::1 - - [19/Oct/2022:16:41:59 +0000] "GET /api/v1/categories/5e90478549941f52dcb01b34 HTTP/1.1" 200 7874 "-" "PostmanRuntime/7.29.2"
 ::1 - - [19/Oct/2022:16:49:58 +0000] "GET /api/v1/books HTTP/1.1" 200 31748 "-" "PostmanRuntime/7.29.2"
+::1 - - [19/Oct/2022:17:14:33 +0000] "GET /api/v1/categories HTTP/1.1" 200 1419 "-" "PostmanRuntime/7.29.2"
+::1 - - [19/Oct/2022:17:14:41 +0000] "DELETE /api/v1/categories/5e90478549941f52dcb01b34 HTTP/1.1" 200 404 "-" "PostmanRuntime/7.29.2"
+::1 - - [19/Oct/2022:17:14:50 +0000] "GET /api/v1/books HTTP/1.1" 200 23821 "-" "PostmanRuntime/7.29.2"
+::1 - - [19/Oct/2022:17:18:19 +0000] "GET /api/v1/books HTTP/1.1" 200 31739 "-" "PostmanRuntime/7.29.2"

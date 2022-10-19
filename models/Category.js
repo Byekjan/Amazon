@@ -38,6 +38,11 @@ CategorySchema.virtual('books', {
     justOne: false
 });
 
+CategorySchema.pre('remove', async function(next) {
+    await this.model('Book').deleteMany({category: this._id});
+    next();
+});
+
 CategorySchema.pre('save', function(next) {
     //Name translator to slug
     this.slug = slugify(this.name);
