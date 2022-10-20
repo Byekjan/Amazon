@@ -1,6 +1,7 @@
 const Book = require("../models/Book");
+const Category = require("../models/Category");
 const MyError = require("../utils/myError");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 
 exports.getBooks = asyncHandler(async (req, res, next) => {
     let query;
@@ -20,40 +21,60 @@ exports.getBooks = asyncHandler(async (req, res, next) => {
     });
 });
 
-exports.getBook = (req, res, next) => {
+exports.getBook = asyncHandler( async (req, res, next) => {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+        throw new MyError(req.params.id + " data not found", 400);
+    }
+
+    const avg = await Book.computeCategoryAveragePrice(book.category);
+
     res.status(200).json({
         success: true,
-        data: 'get book'
+        id: `get book id -> ${req.params.id}`,
+        data: book,
+        avgPrice: avg
     });
-}
+});
 
-exports.createtBook = async (req, res, next) => {
-    try {
-        const book = await Book.create(req.body);
-        res.status(200).json({
-            success: true,
-            // userID: req.userID,
-            data: book
-        });
-    } catch (err) {
-        res.status(400).json({
-            success: false,
-            message: err
-        })
+exports.createBook = asyncHandler( async (req, res, next) => {
+    const category = await Category.findById(req.body.category);
+    if (!category) {
+        throw new MyError(req.body.category + " category not found", 400);
     }
     
-}
+    const book = await Book.create(req.body);
 
-exports.updateBook = (req, res, next) => {
     res.status(200).json({
         success: true,
-        data: 'update book'
+        id: `get book id -> ${req.body.id}`,
+        data: book
     });
-}
+});
 
-exports.deleteBook = (req, res, next) => {
+exports.updateBook = asyncHandler( async (req, res, next) => {
+    const book = await Book.findByIdAndUpdate(req.params.id, req.body, {
+        new: true, //oorchlogdson medeeleliig butsaj uguh
+        // it accepts model validator too when update
+        runValidators: true
+    });
     res.status(200).json({
         success: true,
-        data: 'update book'
+        data: book
     });
-}
+});
+
+exports.deleteBook = asyncHandler( async (req, res, next) => {
+    const book = await Book.findById(req.params.id);
+
+    if (!book) {
+        throw new MyError(req.params.id + " book  not found", 400);
+    }
+
+    book.remove();
+
+    res.status(200).json({
+        success: true,
+        data: book
+    });
+});

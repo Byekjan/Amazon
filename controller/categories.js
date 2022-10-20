@@ -1,6 +1,6 @@
 const Category = require('../models/Category');
 const MyError = require("../utils/myError");
-const asyncHandler = require("../middleware/asyncHandler");
+const asyncHandler = require("express-async-handler");
 
 exports.getCategories = asyncHandler( async (req, res, next) => {
     // {{url}}/api/v1/categories?select=name slug averagePrice&sort=averagePrice
